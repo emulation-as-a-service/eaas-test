@@ -1,0 +1,9 @@
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout
+    - run: |
+        scripts/install-test-server.sh
+        while ! curl http://localhost:8080/emil/; do sleep 1; done
