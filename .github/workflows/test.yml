@@ -7,5 +7,5 @@ jobs:
     - run: |
         git clone https://eaas.dev/eaas-local-installer
         cd eaas-local-installer
-        scripts/install-test-server.sh
+        sudo scripts/install-test-server.sh
         while ! curl http://localhost:8080/emil/; do sleep 1; done
