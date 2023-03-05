@@ -13,3 +13,6 @@ jobs:
         sudo scripts/install-test-server.sh
         
         while ! curl http://localhost:8080/emil/; do sleep 1; done
+    - uses: actions/upload-artifact@v3
+      with:
+        path: "*.png"
