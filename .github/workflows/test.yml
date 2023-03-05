@@ -3,7 +3,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout
+    - uses: actions/checkout@latest
     - run: |
         scripts/install-test-server.sh
         while ! curl http://localhost:8080/emil/; do sleep 1; done
