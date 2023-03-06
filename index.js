@@ -1,16 +1,22 @@
 #!/usr/bin/env node
 const { chromium } = require('playwright');
-const { argv } = require("process");
-const domain = argv.slice(2);
+const { argv, env } = require("process");
+
+const [ domain ] = argv.slice(2);
+const { HEADLESS } = env;
+
+const origin = new URL(domain).origin;
+
+const timeout = time_ms => new Promise(r => setTimeout(r, time_ms));
 
 (async () => {
   const browser = await chromium.launch({
-    headless: false
+    headless: Boolean(HEADLESS),
   });
   const context = await browser.newContext();
   const page = await context.newPage();
-  await page.goto(`https://${domain}/admin/`);
-  await page.goto(`https://${domain}/admin/#/admin/dashboard`);
+  await page.goto(`${origin}/admin/`);
+  await page.goto(`${origin}/admin/#/admin/dashboard`);
   await page.getByRole('link', { name: 'Environments' }).click();
   await page.getByRole('link', { name: 'Administration' }).click();
   await page.getByRole('link', { name: 'Manage Emulators Emulators' }).click();
@@ -44,6 +50,9 @@ const domain = argv.slice(2);
   await page.getByRole('button', { name: 'Save' }).click();
   await page.getByRole('button', { name: 'Choose action' }).click();
   await page.getByText('Run Environment').click();
+
+  await timeout(30_000);
+  await page.screenshot({ path: "environment.png" });
 
   // ---------------------
   await context.close();

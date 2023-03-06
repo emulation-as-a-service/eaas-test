@@ -1,0 +1,24 @@
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v3
+    - run: |    
+        (
+        git clone https://eaas.dev/eaas-local-installer
+        cd eaas-local-installer
+        # HACK: using port 8080 is broken in eaas.dev/eaas-ansible
+        sed -i "s/port: 8080/port: 80/" config/eaasi.yaml.template
+        # HACK: scripts/install-dependencies.sh conflicts with packages preinstalled in GitHub Actions image
+        sudo apt remove -y moby-containerd moby-runc
+        sudo scripts/install-test-server.sh || :
+        )
+
+        while ! curl -f http://localhost/emil/Emil/buildInfo; do sleep 1; done
+
+        npm install
+        HEADLESS=1 ./index.js http://localhost
+    - uses: actions/upload-artifact@v3
+      with:
+        path: "*.png"
