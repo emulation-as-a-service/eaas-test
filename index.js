@@ -2,20 +2,12 @@
 const { chromium } = require('playwright');
 const { argv, env } = require("process");
 
-const [ urlOrDomain ] = argv.slice(2);
+const [ domain ] = argv.slice(2);
 const { HEADLESS } = env;
 
-const parseUrlOrDomain = urlOrDomain => {
-  try {
-    return new URL(urlOrDomain);
-  } catch {
-    return new URL(`https://${urlOrDomain}`);
-  }
-};
+const origin = new URL(domain).origin;
 
 const timeout = time_ms => new Promise(r => setTimeout(r, time_ms));
-
-const origin = parseUrlOrDomain(urlOrDomain).origin;
 
 (async () => {
   const browser = await chromium.launch({
@@ -58,9 +50,9 @@ const origin = parseUrlOrDomain(urlOrDomain).origin;
   await page.getByRole('button', { name: 'Save' }).click();
   await page.getByRole('button', { name: 'Choose action' }).click();
   await page.getByText('Run Environment').click();
-  
-  await timeout(30_000);
-  await page.screenshot({path: "environment.png"});
+
+  await timeout(10_000);
+  await page.screenshot({ path: "environment.png" });
 
   // ---------------------
   await context.close();
