@@ -5,17 +5,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: |
-        npm install
-        ./index.js
-        
         git clone https://eaas.dev/eaas-local-installer
         cd eaas-local-installer
         sudo apt remove -y moby-containerd moby-runc
         sudo scripts/install-test-server.sh || :
-        
-        
+
         while ! curl http://localhost:8080/emil/; do sleep 1; done
-        
+
+        npm install
+        HEADLESS=1 ./index.js
     - uses: actions/upload-artifact@v3
       with:
         path: "*.png"
