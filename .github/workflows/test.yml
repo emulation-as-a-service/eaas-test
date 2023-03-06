@@ -13,7 +13,7 @@ jobs:
         while ! curl http://localhost:8080/emil/; do sleep 1; done
 
         npm install
-        HEADLESS=1 ./index.js
+        HEADLESS=1 ./index.js localhost:8080
     - uses: actions/upload-artifact@v3
       with:
         path: "*.png"
