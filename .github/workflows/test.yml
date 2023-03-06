@@ -10,6 +10,7 @@ jobs:
         cd eaas-local-installer
         # HACK: using port 8080 is broken in eaas.dev/eaas-ansible
         sed -i "s/port: 8080/port: 80/" config/eaasi.yaml.template
+        # HACK: scripts/install-dependencies.sh conflicts with packages preinstalled in GitHub Actions image
         sudo apt remove -y moby-containerd moby-runc
         sudo scripts/install-test-server.sh || :
         )
