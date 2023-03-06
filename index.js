@@ -13,6 +13,8 @@ const parseUrlOrDomain = urlOrDomain => {
   }
 };
 
+const timeout = time_ms => new Promise(r => setTimeout(r, time_ms));
+
 const origin = parseUrlOrDomain(urlOrDomain).origin;
 
 (async () => {
@@ -57,6 +59,7 @@ const origin = parseUrlOrDomain(urlOrDomain).origin;
   await page.getByRole('button', { name: 'Choose action' }).click();
   await page.getByText('Run Environment').click();
   
+  await timeout(30_000);
   await page.screenshot({path: "environment.png"});
 
   // ---------------------
