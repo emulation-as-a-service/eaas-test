@@ -57,7 +57,7 @@ const origin = parseUrlOrDomain(urlOrDomain).origin;
   await page.getByRole('button', { name: 'Choose action' }).click();
   await page.getByText('Run Environment').click();
   
-  await page.screenshot("environment.png");
+  await page.screenshot({path: "environment.png"});
 
   // ---------------------
   await context.close();
