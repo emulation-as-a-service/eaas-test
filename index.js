@@ -51,7 +51,7 @@ const timeout = time_ms => new Promise(r => setTimeout(r, time_ms));
   await page.getByRole('button', { name: 'Choose action' }).click();
   await page.getByText('Run Environment').click();
 
-  await timeout(20_000);
+  await timeout(25_000);
   await page.screenshot({ path: "environment.png" });
 
   // ---------------------
